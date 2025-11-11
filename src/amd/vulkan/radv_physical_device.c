@@ -2314,9 +2314,13 @@ VkResult
 create_drm_physical_device(struct vk_instance *vk_instance, struct _drmDevice *device, struct vk_physical_device **out)
 {
 #ifndef _WIN32
-   if (!(device->available_nodes & (1 << DRM_NODE_RENDER)) || device->bustype != DRM_BUS_PCI ||
+   /*
+    * Rejecting non-PCI could lead to
+    * Vulkan not working on Xclipse
+    *
+    * if (!(device->available_nodes & (1 << DRM_NODE_RENDER)) || device->bustype != DRM_BUS_PCI ||
        device->deviceinfo.pci->vendor_id != ATI_VENDOR_ID)
-      return VK_ERROR_INCOMPATIBLE_DRIVER;
+      return VK_ERROR_INCOMPATIBLE_DRIVER;*/
 
    return radv_physical_device_try_create((struct radv_instance *)vk_instance, device,
                                           (struct radv_physical_device **)out);
